@@ -1,4 +1,6 @@
 import React from "react";
+import emoji from "react-easy-emoji";
+
 import "./App.css";
 class SideNav extends React.Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class SideNav extends React.Component {
         (result) => {
           this.setState({
             isLoaded: true,
-            result: result['results'],
+            result: result["results"],
           });
         },
         (error) => {
@@ -41,11 +43,11 @@ class SideNav extends React.Component {
       );
   }
   render() {
-        
-    return <div className="side-nav">
-        {this.state.isLoaded ? this.state.result[0].emoji : ''}
-    </div>;
-    
+    return (
+      <div className="side-nav">
+        <h1>{this.state.isLoaded ? emoji(this.state.result[0].emoji) : ""}</h1>
+      </div>
+    );
   }
 }
 

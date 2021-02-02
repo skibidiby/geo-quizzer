@@ -8,18 +8,13 @@ import {
 const geoUrl =
   "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
 
-const handleClick = (geo) => () => {
-  console.log(geo.properties["NAME"]);
-};
-
 class MapChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = { countries: [] };
   }
-  
+
   render() {
-    console.log(this.state.countries);
     return (
       <div className="map">
         <ComposableMap
@@ -41,7 +36,9 @@ class MapChart extends React.Component {
                     geography={geo}
                     fill="#9998A3"
                     stroke="#EAEAEC"
-                    onClick={handleClick(geo)}
+                    onClick={() => {
+                      this.props.selectedCountry(geo.properties["NAME"]);
+                    }}
                     style={{
                       default: {
                         fill: "#D6D6DA",
