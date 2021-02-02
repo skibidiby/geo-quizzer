@@ -83,10 +83,10 @@ class App extends React.Component {
                           () => {
                             if (this.state.countries[random_int].name ===
                               this.state.selectedCountry){
-                                this.setState({rightAnswer:true})
+                                this.setState({rightAnswer:true},()=>console.log(this.state.selectedCountry))
                               }
                               else{
-                                this.setState({rightAnswer:false})
+                                this.setState({rightAnswer:false},()=>console.log(this.state.selectedCountry))
                               }
                           }
                         );
