@@ -13,7 +13,7 @@ const geoUrl =
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { countries: [] };
+    this.state = { countries: [], rightAnswer: false, init: false };
   }
   componentDidMount() {
     const where = encodeURIComponent(
@@ -26,7 +26,7 @@ class App extends React.Component {
       })
     );
     fetch(
-      `https://parseapi.back4app.com/classes/Country?limit=20&order=name&keys=name,emoji&where=${where}`,
+      `https://parseapi.back4app.com/classes/Country?order=name&keys=name,emoji&where=${where}`,
       {
         headers: {
           "X-Parse-Application-Id": "mxsebv4KoWIGkRntXwyzg6c6DhKWQuit8Ry9sHja",
@@ -52,7 +52,7 @@ class App extends React.Component {
   }
 
   render() {
-    let random_int = Math.floor(Math.random() * Math.floor(20));
+    let random_int = Math.floor(Math.random() * Math.floor(44));
     return (
       <div className="app">
         <div className="map">
@@ -79,21 +79,34 @@ class App extends React.Component {
                         this.setState(
                           {
                             selectedCountry: geo.properties["NAME"],
+                            selectedCountryKey: geo.rsmKey,
+                            oldCountry: this.state.countries[random_int].name,
+                            init: true
                           },
                           () => {
-                            if (this.state.countries[random_int].name ===
-                              this.state.selectedCountry){
-                                this.setState({rightAnswer:true},()=>console.log(this.state.selectedCountry))
-                              }
-                              else{
-                                this.setState({rightAnswer:false},()=>console.log(this.state.selectedCountry))
-                              }
+                            if (
+                              this.state.countries[random_int].name ===
+                              this.state.selectedCountry
+                            ) {
+                              this.setState({ rightAnswer: true }, () =>
+                                console.log(this.state.selectedCountry)
+                              );
+                            } else {
+                              this.setState({ rightAnswer: false }, () =>
+                                console.log(geo)
+                              );
+                            }
                           }
                         );
                       }}
                       style={{
                         default: {
-                          fill: "#D6D6DA",
+                          fill:
+                            this.state.selectedCountryKey === geo.rsmKey
+                              ? this.state.rightAnswer
+                                ? "green"
+                                : "red"
+                              : "",
                           outline: "none",
                         },
                         hover: {
@@ -101,7 +114,7 @@ class App extends React.Component {
                           outline: "none",
                         },
                         pressed: {
-                          fill: "#E42",
+                          fill: "red",
                           outline: "none",
                         },
                       }}
@@ -113,17 +126,38 @@ class App extends React.Component {
           </ComposableMap>
         </div>
         <div className="side-nav">
+          <div className='logo'>
+            <img src='./logo.png' />
+          </div>
           <h1>
             {this.state.isLoaded
               ? emoji(this.state.countries[random_int].emoji)
               : ""}
           </h1>
           <h2>
-            {this.state.isLoaded &&
-            this.state.rightAnswer
-              ? "YES"
-              : "NO"}
+            {this.state.init ? this.state.isLoaded && this.state.rightAnswer ? (
+              <a style={{ color: "green" }}> {"Правилен отговор"} </a>
+            ) : (
+              <a style={{ color: "red" }}> {"Грешен отговор"}</a>
+            ): ""}
           </h2>
+          {
+            this.state.isLoaded ? (
+              this.state.selectedCountry ? (
+                this.state.rightAnswer ? (
+                  ""
+                ) : (
+                  <p>
+                    Ти избра {this.state.selectedCountry}, а знамето беше на{" "}
+                    {this.state.oldCountry}
+                  </p>
+                )
+              ) : (
+                ""
+              )
+            ) : (
+              ""
+            )}
         </div>
       </div>
     );
