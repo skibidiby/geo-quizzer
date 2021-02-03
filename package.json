@@ -2,7 +2,7 @@
   "name": "geo-quizzer",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://skibidiby.github.io/geo-guesser",
+  "homepage": "https://skibidiby.github.io/geo-quizzer/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
